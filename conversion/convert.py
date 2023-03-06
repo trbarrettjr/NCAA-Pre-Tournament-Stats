@@ -1,9 +1,16 @@
 #!/usr/bin/python3
 import json
+import sys
 
 # The object from here is to convert the tabular data to json data for processing
 
-f = open('ppg.txt')
+if len(sys.argv) == 2:
+    fn = sys.argv[1]
+else:
+    print('Missing Filename: {} [filename]'.format(sys.argv[0]))
+    exit()
+
+f = open(fn)
 data = f.readlines()
 for i, v in enumerate(data):
     data[i] = v.strip()
@@ -21,7 +28,9 @@ mylist = list()
 for item in values:
     mylist.append({k:v for k,v in zip(keys,item)})
 
-w = open('ppg.json', 'w')
+outname = fn.split('.')[0] + ".json"
+
+w = open(outname, 'w')
 my_out = json.dumps(mylist)
 w.write(my_out)
 w.close()
